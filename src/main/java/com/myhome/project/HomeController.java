@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * Handles requests for the application home page.
  */
 @Controller
+@RequestMapping("/project/*")
 public class HomeController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
@@ -34,6 +35,19 @@ public class HomeController {
 		model.addAttribute("serverTime", formattedDate );
 		
 		return "home";
+	}
+	
+	@RequestMapping(value = "list", method = RequestMethod.GET)
+	public void listPage() throws Exception {
+		logger.info("Sboard list GET...");
+
+/*		model.addAttribute("list", service.listSearch(cri));
+
+		PageMaker maker = new PageMaker();
+		maker.setCri(cri);
+		maker.setTotalCount(service.listSearchCount(cri));
+
+		model.addAttribute("pageMaker", maker);*/
 	}
 	
 }
