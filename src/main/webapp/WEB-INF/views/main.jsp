@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -44,7 +45,7 @@
 	<div class="container ">
 		<div class="row full-right">
 			<div class="col-lg-1 pull-right">
-				<a href="write.do" class="btn btn-primary" role="button">새 프로젝트 등록</a>
+				<a href="${pageContext.request.contextPath}/register" class="btn btn-primary" role="button">새 프로젝트 등록</a>
 			</div>
 		</div>
 		<br> <br> <br>
@@ -59,11 +60,12 @@
 				</tr>
 			</thead>
 			<tbody>
+			
 				<c:forEach items="${listItem}" var="project">
 					<tr>
-						<td><a href="detail.do?no=${project.no }"> ${project.name }</a></td>
-						<td>${project.sdate}</td>
-						<td>${project.edate}</td>
+						<td><a href="${pageContext.request.contextPath}/read/?pno=${project.pno }"> ${project.name }</a></td>
+						<td><fmt:formatDate value="${project.sdate }" pattern="yyyy-MM-dd" /></td>
+						<td><fmt:formatDate value="${project.edate }" pattern="yyyy-MM-dd" /></td>
 						<td class="pro">${project.progress}</td>
 					</tr>
 				</c:forEach>

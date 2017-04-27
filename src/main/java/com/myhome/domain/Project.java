@@ -1,80 +1,68 @@
 package com.myhome.domain;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Project {
-	private int no;
+	private int pno;
 	private String name;
 	private String content;
 	private Date sdate;
 	private Date edate;
 	private int progress;
 
-	public Project(String name, String content, Object sdate, Object edate, int progress) {
-		this.name = name;
-		this.content = content;
-		this.sdate = format(sdate);
-		this.edate = format(edate);
-		this.progress = progress;
-
+	public int getPno() {
+		return pno;
 	}
 
-	public void setNo(int no) {
-		this.no = no;
-	}
-
-	private Date format(Object date) {
-
-		Date formatedDate = null;
-
-		if (date instanceof String) {
-			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-
-			try {
-				formatedDate = format.parse((String) date);
-
-			} catch (ParseException e) {
-				System.out.println("String 타입 데이터 처리 error!!");
-			}
-
-		} else if (date instanceof Date) {
-			formatedDate = (Date) date;
-		} else {
-			System.out.println("project date format 처리 에러!!");
-			formatedDate = null;
-		}
-		return formatedDate;
-	}
-
-	public int getNo() {
-		return no;
+	public void setPno(int pno) {
+		this.pno = pno;
 	}
 
 	public String getName() {
 		return name;
 	}
 
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public String getContent() {
 		return content;
 	}
 
+	public void setContent(String content) {
+		this.content = content;
+	}
+
 	public Date getSdate() {
+		
 		return sdate;
+	}
+
+	public void setSdate(Date sdate) {
+		this.sdate = sdate;
 	}
 
 	public Date getEdate() {
 		return edate;
 	}
 
+	public void setEdate(Date edate) {
+		this.edate = edate;
+	}
+
 	public int getProgress() {
 		return progress;
 	}
 
+	public void setProgress(int progress) {
+		this.progress = progress;
+	}
+
 	@Override
 	public String toString() {
-		return "Project [no=" + no + ", name=" + name + ", content=" + content + ", sdate=" + sdate + ", edate=" + edate
+		return "Project [no=" + pno + ", name=" + name + ", content=" + content + ", sdate=" + sdate + ", edate=" + edate
 				+ ", progress=" + progress + "]";
 	}
+
 }

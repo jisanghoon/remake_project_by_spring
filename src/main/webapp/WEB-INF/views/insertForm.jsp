@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,8 +12,9 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <script type="text/javascript">
 	function doModify() {
+
 		$('#modifyForm').attr({
-			action : 'modify.do',
+			action : '${pageContext.request.contextPath}/modify',
 			method : 'post'
 		}).submit();
 	}
@@ -22,7 +24,9 @@
 	margin: 320px auto;
 }
 </style>
-
+<script type="text/javascript">
+	console.log('${project.pno}')
+</script>
 </head>
 <body>
 
@@ -34,10 +38,11 @@
 
 
 		<c:if test="${ empty project }">
-			<form class="form-horizontal  col-md-offset-1" method="post" action="write.do">
+			<form class="form-horizontal  col-md-offset-1" method="post" action="${pageContext.request.contextPath}/register">
 		</c:if>
 		<c:if test="${! empty project }">
 			<form class="form-horizontal  col-md-offset-1" method="post" id="modifyForm">
+				<input type="hidden" value="${project.pno}" name="pno">
 		</c:if>
 
 
@@ -56,7 +61,7 @@
 		<div class="form-group">
 			<label class="control-label col-sm-2" for="sdate">시작날짜 :</label>
 			<div class="col-sm-3">
-				<input type="date" class="form-control" id="sdate" name="sdate" placeholder="Start Date" required value="${project.sdate }">
+				<input type="date" class="form-control" id="sdate" name="sdate1" placeholder="Start Date" required value="${project.sdate }">
 
 			</div>
 		</div>
@@ -65,7 +70,7 @@
 
 			<label class="control-label col-sm-2" for="edate">마감날짜 :</label>
 			<div class="col-sm-3">
-				<input type="date" class="form-control" id="edate" name="edate" placeholder="Due Date" required value="${project.edate }">
+				<input type="date" class="form-control" id="edate" name="edate1" placeholder="Due Date" required value="${project.edate }">
 
 			</div>
 		</div>
@@ -74,7 +79,7 @@
 		<div class="form-group">
 			<label for="pro" class="control-label col-sm-2 "> 상태 : </label>
 			<div class="col-sm-2">
-				<select class="form-control col-sm-2" id="pro" name="pro">
+				<select class="form-control col-sm-2" id="pro" name="progress">
 					<option value="0">준비</option>
 					<option value="1">진행중</option>
 					<option value="2">종료</option>
@@ -90,11 +95,10 @@
 					<a type="button" class="btn btn-primary" href="list.do">취 소</a>
 				</c:if>
 				<c:if test="${! empty project }">
-					<input type="hidden" name="no" value="${project.no}" />
+					<input type="hidden" name="no" value="${project.pno}" />
 					<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">수정</button>
-					<a type="button" class="btn btn-primary" href="detail.do?no=${project.no }">취 소</a>
+					<a type="button" class="btn btn-primary" href="${pageContext.request.contextPath}/read?pno=${project.pno }">취 소</a>
 				</c:if>
-
 			</div>
 		</div>
 		</form>

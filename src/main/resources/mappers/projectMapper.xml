@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dgit.mapper.ProjectMapper">
+	<select id="list" resultType="Project">
+		select * from project
+	</select>
+
+	<select id="read" resultType="Project">
+		select * from project where pno=#{pno}
+	</select>
+	<update id="update">
+		update project 
+		set 
+		name=#{name},
+		content=#{content},
+		sdate=#{sdate},
+		edate=#{edate},
+		progress=#{progress} 
+		where pno=#{pno}
+	</update>
+	<delete id="delete">
+		delete from project where pno=#{pno}
+	</delete>
+	<insert id="insert">
+		insert into project(name,content,sdate,edate,progress) 
+		values
+		(#{name},#{content},#{sdate},#{edate},#{progress})
+	</insert>
+</mapper>
+
+
+
+
+
+
+
+
+
+

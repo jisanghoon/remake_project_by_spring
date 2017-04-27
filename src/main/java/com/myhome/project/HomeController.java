@@ -1,8 +1,9 @@
 package com.myhome.project;
 
-import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
+
+import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,44 +11,84 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.myhome.domain.Project;
+import com.myhome.service.ProjectService;
 
 /**
  * Handles requests for the application home page.
  */
 @Controller
-@RequestMapping("/project/*")
 public class HomeController {
-	
+
+	@Inject
+	ProjectService service;
+
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
-	
-	/**
-	 * Simply selects the home view to render by returning its name.
-	 */
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home(Locale locale, Model model) {
-		logger.info("Welcome home! The client locale is {}.", locale);
-		
-		Date date = new Date();
-		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
-		
-		String formattedDate = dateFormat.format(date);
-		
-		model.addAttribute("serverTime", formattedDate );
-		
-		return "home";
+
+	@RequestMapping(value = "", method = RequestMethod.GET)
+	public String listPage(Model model) throws Exception {
+		logger.info("Main Page Loading.........");
+		model.addAttribute("listItem", service.list());
+		return "main";
 	}
-	
-	@RequestMapping(value = "list", method = RequestMethod.GET)
-	public void listPage() throws Exception {
-		logger.info("Sboard list GET...");
 
-/*		model.addAttribute("list", service.listSearch(cri));
-
-		PageMaker maker = new PageMaker();
-		maker.setCri(cri);
-		maker.setTotalCount(service.listSearchCount(cri));
-
-		model.addAttribute("pageMaker", maker);*/
+	@RequestMapping(value = "/register", method = RequestMethod.GET)
+	public String registerGET() throws Exception {
+		logger.info("register get ............");
+		return "insertForm";
 	}
-	
+
+	@RequestMapping(value = "/register", method = RequestMethod.POST)
+	public String registerPOST(Project project,String sdate1, String edate1, Model model) throws Exception {
+		logger.info("register get ............");
+		
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
+		if (sdate1 != "") project.setSdate(format.parse(sdate1));
+		if (edate1 != "") project.setEdate(format.parse(edate1));
+
+		service.create(project);
+		
+		return "redirect:/";
+	}
+
+	@RequestMapping(value = "read", method = RequestMethod.GET)
+	public String read(@RequestParam("pno") int pno, Model model) throws Exception {
+		logger.info("read GET...");
+		model.addAttribute("project", service.read(pno));
+		return "detail";
+	}
+
+	@RequestMapping(value = "modify", method = RequestMethod.GET)
+	public String modifyGET(@RequestParam("pno") int pno, Model model) throws Exception {
+		logger.info("modify GET...");
+		System.out.println("------------------>>>" + service.read(pno));
+		model.addAttribute("project", service.read(pno));
+		return "insertForm";
+	}
+
+	@RequestMapping(value = "modify", method = RequestMethod.POST)
+	public String modifyPOST(Project project, String sdate1, String edate1, RedirectAttributes rttr) throws Exception {
+		logger.info("modify POST...");
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
+		if (sdate1 != "") project.setSdate(format.parse(sdate1));
+		if (edate1 != "") project.setEdate(format.parse(edate1));
+
+		service.modify(project);
+		rttr.addFlashAttribute("pno", project.getPno());
+		return "redirect:/";
+
+	}
+
+	@RequestMapping(value = "remove", method = RequestMethod.GET)
+	public String remove(@RequestParam("pno") int pno) throws Exception {
+		logger.info("remove GET...");
+		service.remove(pno);
+		return "redirect:/";
+	}
+
 }
